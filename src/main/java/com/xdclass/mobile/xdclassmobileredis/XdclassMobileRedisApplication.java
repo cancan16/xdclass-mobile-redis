@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableScheduling
-class XdclassMobileRedisApplication {
+public class XdclassMobileRedisApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(XdclassMobileRedisApplication.class, args);

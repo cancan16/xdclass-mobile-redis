@@ -36,6 +36,7 @@ public class UserController {
 
     /**
      * set值和get值的时候序列化方式必须保持一致
+     *
      * @param id
      * @return
      */
@@ -44,7 +45,7 @@ public class UserController {
     public User getUseCache(String id) {
 
         //step1 先从redis里面取值
-        User user =  (User)redisService.get(key + id);
+        User user = (User) redisService.getValue(key + id);
 
         //step2 如果拿不到则从DB取值
         if (user == null) {
@@ -72,9 +73,9 @@ public class UserController {
     @RequestMapping(value = "/getexpire", method = RequestMethod.GET)
     public User findByIdTtl(String id) {
         User u = new User();
-        try{
+        try {
             u = userService.findByIdTtl(id);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return u;

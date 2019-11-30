@@ -19,16 +19,16 @@ public class RedisController {
 
     @RequestMapping("/redis/setAndGet")
     @ResponseBody
-    public String setAndGetValue(String name,String value){
-        redisTemplate.opsForValue().set(name,value);
+    public String setAndGetValue(String name, String value) {
+        redisTemplate.opsForValue().set(name, value);
         return (String) redisTemplate.opsForValue().get(name);
     }
 
 
     @RequestMapping("/redis/setAndGet1")
     @ResponseBody
-    public String setAndGetValueV2(String name,String value){
-        service.set(name,value);
-        return service.get(name).toString();
+    public String setAndgenValueV2(String name, String value) {
+        service.set(name, value);
+        return service.getValue(name).toString();
     }
 }

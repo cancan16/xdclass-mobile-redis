@@ -137,9 +137,9 @@ public class RedisService {
      * @param key
      * @return
      */
-    public Object get(final String key) {
+    public Object getValue(final String key) {
         Object result = null;
-        ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
         result = operations.get(key);
         return result;
     }

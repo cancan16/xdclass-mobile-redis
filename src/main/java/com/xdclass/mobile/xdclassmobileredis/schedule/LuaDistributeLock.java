@@ -70,12 +70,12 @@ public class LuaDistributeLock {
      * @return
      */
     public Boolean luaExpress(String key, String value) {
-        lockScript = new DefaultRedisScript<Boolean>();
+        lockScript = new DefaultRedisScript<>();
         lockScript.setScriptSource(
                 new ResourceScriptSource(new ClassPathResource("add.lua")));
         lockScript.setResultType(Boolean.class);
         // 封装参数
-        List<Object> keyList = new ArrayList<Object>();
+        List<Object> keyList = new ArrayList<>();
         keyList.add(key);
         keyList.add(value);
         Boolean result = (Boolean) redisTemplate.execute(lockScript, keyList);

@@ -34,16 +34,12 @@ public class LuaDistributeLock {
 
     private DefaultRedisScript<Boolean> lockScript;
 
-
     @Scheduled(cron = "0/10 * * * * *")
     public void lockJob() {
-
         String lock = LOCK_PREFIX + "LockNxExJob";
-
         boolean luaRet = false;
         try {
             luaRet = luaExpress(lock, getHostIp());
-
             //获取锁失败
             if (!luaRet) {
                 String value = (String) redisService.getValue(lock);
@@ -57,7 +53,6 @@ public class LuaDistributeLock {
             }
         } catch (Exception e) {
             logger.error("lock error", e);
-
         } finally {
             if (luaRet) {
                 logger.info("release lock success");

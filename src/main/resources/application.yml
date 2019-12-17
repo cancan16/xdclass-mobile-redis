@@ -24,6 +24,10 @@ spring:
     druidLoginName: wjf # 登录druid的账号
     druidPassword: wjf # 登录druid的密码
     cachePrepStmts: true  # 开启二级缓存
+  redis:
+    sentinel:
+      master: mymaster   #mymaster
+      nodes: 192.168.25.11:26379
 mybatis:
   typeAliasesPackage: com.xdclass.mobile.xdclassmobileredis.mapper      # 需要学员自己修改填写
   mapperLocations: classpath:/com/xdclass/mobile/xdclassmobileredis/mapper/*.xml

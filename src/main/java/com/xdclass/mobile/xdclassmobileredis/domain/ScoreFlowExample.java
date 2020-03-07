@@ -405,7 +405,7 @@ public class ScoreFlowExample {
             return condition;
         }
 
-        public Object getValue() {
+        public Object genValue() {
             return value;
         }
 

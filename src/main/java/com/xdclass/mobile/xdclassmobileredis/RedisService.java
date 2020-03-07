@@ -25,7 +25,7 @@ public class RedisService {
      * 写入缓存
      *
      * @param key
-     * @param offset 位 8Bit=1Byte
+     * @param offset   位 8Bit=1Byte
      * @return
      */
     public boolean setBit(String key, long offset, boolean isShow) {
@@ -71,6 +71,44 @@ public class RedisService {
         try {
             ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
             operations.set(key, value);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
+     * 写入缓存
+     *
+     * @param key
+     * @return
+     */
+    public Object get(final String key) {
+        boolean result = false;
+        try {
+            ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
+            return operations.get(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    /**
+     * 写入缓存
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean decr(final String key, int value) {
+        boolean result = false;
+        try {
+            ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
+            operations.increment(key,-value);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +175,7 @@ public class RedisService {
      * @param key
      * @return
      */
-    public Object getValue(final String key) {
+    public Object genValue(final String key) {
         Object result = null;
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         result = operations.get(key);
@@ -259,12 +297,12 @@ public class RedisService {
     /**
      * 有序集合获取排名
      *
-     * @param key   集合名称
+     * @param key 集合名称
      * @param value 值
      */
     public Long zRank(String key, Object value) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.rank(key, value);
+        return zset.rank(key,value);
     }
 
 
@@ -273,9 +311,9 @@ public class RedisService {
      *
      * @param key
      */
-    public Set<ZSetOperations.TypedTuple<Object>> zRankWithScore(String key, long start, long end) {
+    public Set<ZSetOperations.TypedTuple<Object>> zRankWithScore(String key, long start,long end) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<Object>> ret = zset.rangeWithScores(key, start, end);
+        Set<ZSetOperations.TypedTuple<Object>> ret = zset.rangeWithScores(key,start,end);
         return ret;
     }
 
@@ -287,7 +325,7 @@ public class RedisService {
      */
     public Double zSetScore(String key, Object value) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.score(key, value);
+        return zset.score(key,value);
     }
 
 
@@ -309,9 +347,9 @@ public class RedisService {
      *
      * @param key
      */
-    public Set<ZSetOperations.TypedTuple<Object>> reverseZRankWithScore(String key, long start, long end) {
+    public Set<ZSetOperations.TypedTuple<Object>> reverseZRankWithScore(String key, long start,long end) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeByScoreWithScores(key, start, end);
+        Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeByScoreWithScores(key,start,end);
         return ret;
     }
 

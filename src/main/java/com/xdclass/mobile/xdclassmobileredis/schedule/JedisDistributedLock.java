@@ -1,6 +1,7 @@
 package com.xdclass.mobile.xdclassmobileredis.schedule;
 
 import com.xdclass.mobile.xdclassmobileredis.RedisService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisCommands;
 
 import javax.annotation.Resource;
@@ -24,6 +27,7 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class JedisDistributedLock {
@@ -64,7 +68,7 @@ public class JedisDistributedLock {
 
             //获取锁失败
             if (!lockRet) {
-                String value = (String) redisService.getValue(lock);
+                String value = (String) redisService.genValue(lock);
                 //打印当前占用锁的服务器IP
                 logger.info("jedisLockJob get lock fail,lock belong to:{}", value);
                 return;
@@ -79,7 +83,7 @@ public class JedisDistributedLock {
         } finally {
             if (lockRet) {
                 logger.info("jedisLockJob release lock success");
-                releaseLock(lock, getHostIp());
+                releaseLock(lock,getHostIp());
             }
         }
     }
@@ -90,7 +94,7 @@ public class JedisDistributedLock {
             Boolean result = redisTemplate.execute(new RedisCallback<Boolean>() {
                 @Override
                 public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
-                    return connection.set(key.getBytes(), getHostIp().getBytes(), Expiration.seconds(expire), RedisStringCommands.SetOption.ifAbsent());
+                    return connection.set(key.getBytes(), getHostIp().getBytes(), Expiration.seconds(expire) ,RedisStringCommands.SetOption.ifAbsent());
                 }
             });
             return result;
@@ -116,21 +120,20 @@ public class JedisDistributedLock {
 
     /**
      * 释放锁操作
-     *
      * @param key
      * @param value
      * @return
      */
     private boolean releaseLock(String key, String value) {
-        lockScript = new DefaultRedisScript<>();
+        lockScript = new DefaultRedisScript<Boolean>();
         lockScript.setScriptSource(
                 new ResourceScriptSource(new ClassPathResource("unlock.lua")));
         lockScript.setResultType(Boolean.class);
         // 封装参数
-        List<Object> keyList = new ArrayList<>();
+        List<Object> keyList = new ArrayList<Object>();
         keyList.add(key);
         keyList.add(value);
-        Boolean result = redisTemplate.execute(lockScript, keyList);
+        Boolean result = (Boolean) redisTemplate.execute(lockScript, keyList);
         return result;
     }
 

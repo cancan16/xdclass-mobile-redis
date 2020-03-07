@@ -131,12 +131,6 @@ public class RangingService implements InitializingBean {
         return mapList;
     }
 
-//    @Override
-//    public void run(ApplicationArguments args) throws Exception {
-//        System.out.println("======enter run bean=======");
-//        Thread.sleep(100000);
-//        this.rankSaleAdd();
-//    }
 
 
     @Override

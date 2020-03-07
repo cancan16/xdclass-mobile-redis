@@ -27,7 +27,6 @@ public class RankingController {
     }
 
 
-
     @ResponseBody
     @RequestMapping("/increScore")
     public String increScore(String uid, Integer score) {
@@ -52,11 +51,8 @@ public class RankingController {
     @ResponseBody
     @RequestMapping("/scoreByRange")
     public Set<ZSetOperations.TypedTuple<Object>> scoreByRange(Integer start, Integer end) {
-        return rankingService.rankWithScore(start,end);
+        return rankingService.rankWithScore(start, end);
     }
-
-
-
 
 
     @ResponseBody
@@ -69,21 +65,21 @@ public class RankingController {
 
     @ResponseBody
     @RequestMapping("/sale/userScore")
-    public Map<String,Object> userScore(String uid,String name) {
-        return rankingService.userRank(uid,name);
+    public Map<String, Object> userScore(String uid, String name) {
+        return rankingService.userRank(uid, name);
     }
 
     @ResponseBody
     @RequestMapping("/sale/top")
-    public List<Map<String,Object>> reverseZRankWithRank(long start,long end) {
-        return rankingService.reverseZRankWithRank(start,end);
+    public List<Map<String, Object>> reverseZRankWithRank(long start, long end) {
+        return rankingService.reverseZRankWithRank(start, end);
     }
 
 
     @ResponseBody
     @RequestMapping("/sale/scoreByRange")
-    public List<Map<String,Object>> saleScoreByRange(Integer start, Integer end) {
-        return rankingService.saleRankWithScore(start,end);
+    public List<Map<String, Object>> saleScoreByRange(Integer start, Integer end) {
+        return rankingService.saleRankWithScore(start, end);
     }
 
 }

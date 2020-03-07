@@ -13,60 +13,85 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.xdclass.mobile.xdclassmobileredis.domain.UserScore;
-import com.xdclass.mobile.xdclassmobileredis.domain.UserScoreExample.Criteria;
-import com.xdclass.mobile.xdclassmobileredis.domain.UserScoreExample.Criterion;
-import com.xdclass.mobile.xdclassmobileredis.domain.UserScoreExample;
+import com.xdclass.mobile.xdclassmobileredis.domain.RedPacketInfo;
+import com.xdclass.mobile.xdclassmobileredis.domain.RedPacketInfoExample.Criteria;
+import com.xdclass.mobile.xdclassmobileredis.domain.RedPacketInfoExample.Criterion;
+import com.xdclass.mobile.xdclassmobileredis.domain.RedPacketInfoExample;
 import java.util.List;
 import java.util.Map;
 
-public class UserScoreSqlProvider {
+public class RedPacketInfoSqlProvider {
 
-    public String countByExample(UserScoreExample example) {
+    public String countByExample(RedPacketInfoExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("user_score");
+        FROM("red_packet_info");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(UserScoreExample example) {
+    public String deleteByExample(RedPacketInfoExample example) {
         BEGIN();
-        DELETE_FROM("user_score");
+        DELETE_FROM("red_packet_info");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(UserScore record) {
+    public String insertSelective(RedPacketInfo record) {
         BEGIN();
-        INSERT_INTO("user_score");
+        INSERT_INTO("red_packet_info");
         
-        if (record.getUserId() != null) {
-            VALUES("user_id", "#{userId,jdbcType=INTEGER}");
+        if (record.getRedPacketId() != null) {
+            VALUES("red_packet_id", "#{redPacketId,jdbcType=BIGINT}");
         }
         
-        if (record.getUserScore() != null) {
-            VALUES("user_score", "#{userScore,jdbcType=BIGINT}");
+        if (record.getTotalAmount() != null) {
+            VALUES("total_amount", "#{totalAmount,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            VALUES("name", "#{name,jdbcType=VARCHAR}");
+        if (record.getTotalPacket() != null) {
+            VALUES("total_packet", "#{totalPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingAmount() != null) {
+            VALUES("remaining_amount", "#{remainingAmount,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingPacket() != null) {
+            VALUES("remaining_packet", "#{remainingPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getUid() != null) {
+            VALUES("uid", "#{uid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
         return SQL();
     }
 
-    public String selectByExample(UserScoreExample example) {
+    public String selectByExample(RedPacketInfoExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
             SELECT_DISTINCT("id");
         } else {
             SELECT("id");
         }
-        SELECT("user_id");
-        SELECT("user_score");
-        SELECT("name");
-        FROM("user_score");
+        SELECT("red_packet_id");
+        SELECT("total_amount");
+        SELECT("total_packet");
+        SELECT("remaining_amount");
+        SELECT("remaining_packet");
+        SELECT("uid");
+        SELECT("create_time");
+        SELECT("update_time");
+        FROM("red_packet_info");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -77,26 +102,46 @@ public class UserScoreSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        UserScore record = (UserScore) parameter.get("record");
-        UserScoreExample example = (UserScoreExample) parameter.get("example");
+        RedPacketInfo record = (RedPacketInfo) parameter.get("record");
+        RedPacketInfoExample example = (RedPacketInfoExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("user_score");
+        UPDATE("red_packet_info");
         
         if (record.getId() != null) {
             SET("id = #{record.id,jdbcType=INTEGER}");
         }
         
-        if (record.getUserId() != null) {
-            SET("user_id = #{record.userId,jdbcType=INTEGER}");
+        if (record.getRedPacketId() != null) {
+            SET("red_packet_id = #{record.redPacketId,jdbcType=BIGINT}");
         }
         
-        if (record.getUserScore() != null) {
-            SET("user_score = #{record.userScore,jdbcType=BIGINT}");
+        if (record.getTotalAmount() != null) {
+            SET("total_amount = #{record.totalAmount,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            SET("name = #{record.name,jdbcType=VARCHAR}");
+        if (record.getTotalPacket() != null) {
+            SET("total_packet = #{record.totalPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingAmount() != null) {
+            SET("remaining_amount = #{record.remainingAmount,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingPacket() != null) {
+            SET("remaining_packet = #{record.remainingPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getUid() != null) {
+            SET("uid = #{record.uid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
         applyWhere(example, true);
@@ -105,32 +150,57 @@ public class UserScoreSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("user_score");
+        UPDATE("red_packet_info");
         
         SET("id = #{record.id,jdbcType=INTEGER}");
-        SET("user_id = #{record.userId,jdbcType=INTEGER}");
-        SET("user_score = #{record.userScore,jdbcType=BIGINT}");
-        SET("name = #{record.name,jdbcType=VARCHAR}");
+        SET("red_packet_id = #{record.redPacketId,jdbcType=BIGINT}");
+        SET("total_amount = #{record.totalAmount,jdbcType=INTEGER}");
+        SET("total_packet = #{record.totalPacket,jdbcType=INTEGER}");
+        SET("remaining_amount = #{record.remainingAmount,jdbcType=INTEGER}");
+        SET("remaining_packet = #{record.remainingPacket,jdbcType=INTEGER}");
+        SET("uid = #{record.uid,jdbcType=INTEGER}");
+        SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        UserScoreExample example = (UserScoreExample) parameter.get("example");
+        RedPacketInfoExample example = (RedPacketInfoExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(UserScore record) {
+    public String updateByPrimaryKeySelective(RedPacketInfo record) {
         BEGIN();
-        UPDATE("user_score");
+        UPDATE("red_packet_info");
         
-        if (record.getUserId() != null) {
-            SET("user_id = #{userId,jdbcType=INTEGER}");
+        if (record.getRedPacketId() != null) {
+            SET("red_packet_id = #{redPacketId,jdbcType=BIGINT}");
         }
         
-        if (record.getUserScore() != null) {
-            SET("user_score = #{userScore,jdbcType=BIGINT}");
+        if (record.getTotalAmount() != null) {
+            SET("total_amount = #{totalAmount,jdbcType=INTEGER}");
         }
         
-        if (record.getName() != null) {
-            SET("name = #{name,jdbcType=VARCHAR}");
+        if (record.getTotalPacket() != null) {
+            SET("total_packet = #{totalPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingAmount() != null) {
+            SET("remaining_amount = #{remainingAmount,jdbcType=INTEGER}");
+        }
+        
+        if (record.getRemainingPacket() != null) {
+            SET("remaining_packet = #{remainingPacket,jdbcType=INTEGER}");
+        }
+        
+        if (record.getUid() != null) {
+            SET("uid = #{uid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");
@@ -138,7 +208,7 @@ public class UserScoreSqlProvider {
         return SQL();
     }
 
-    protected void applyWhere(UserScoreExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(RedPacketInfoExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -205,7 +275,7 @@ public class UserScoreSqlProvider {
                     } else if (criterion.isListValue()) {
                         sb.append(criterion.getCondition());
                         sb.append(" (");
-                        List<?> listItems = (List<?>) criterion.genValue();
+                        List<?> listItems = (List<?>) criterion.getValue();
                         boolean comma = false;
                         for (int k = 0; k < listItems.size(); k++) {
                             if (comma) {

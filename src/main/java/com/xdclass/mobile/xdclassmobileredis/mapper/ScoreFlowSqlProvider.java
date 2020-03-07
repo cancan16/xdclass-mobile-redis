@@ -205,7 +205,7 @@ public class ScoreFlowSqlProvider {
                     } else if (criterion.isListValue()) {
                         sb.append(criterion.getCondition());
                         sb.append(" (");
-                        List<?> listItems = (List<?>) criterion.getValue();
+                        List<?> listItems = (List<?>) criterion.genValue();
                         boolean comma = false;
                         for (int k = 0; k < listItems.size(); k++) {
                             if (comma) {

@@ -34,28 +34,33 @@ public class LuaDistributeLock {
 
     private DefaultRedisScript<Boolean> lockScript;
 
-//    @Scheduled(cron = "0/10 * * * * *")
+
+    @Scheduled(cron = "0/10 * * * * *")
     public void lockJob() {
+
         String lock = LOCK_PREFIX + "LockNxExJob";
+
         boolean luaRet = false;
         try {
-            luaRet = luaExpress(lock, getHostIp());
+            luaRet = luaExpress(lock,getHostIp());
+
             //获取锁失败
             if (!luaRet) {
-                String value = (String) redisService.getValue(lock);
+                String value = (String) redisService.genValue(lock);
                 //打印当前占用锁的服务器IP
-                logger.info("lua get lock fail,lock belong to:{}", value);
+                //logger.info("lua get lock fail,lock belong to:{}", value);
                 return;
             } else {
                 //获取锁成功
-                logger.info("lua start  lock lockNxExJob success");
+                //logger.info("lua start  lock lockNxExJob success");
                 Thread.sleep(5000);
             }
         } catch (Exception e) {
             logger.error("lock error", e);
+
         } finally {
             if (luaRet) {
-                logger.info("release lock success");
+                //logger.info("release lock success");
                 redisService.remove(lock);
             }
         }
@@ -64,18 +69,17 @@ public class LuaDistributeLock {
 
     /**
      * 获取lua结果
-     *
      * @param key
      * @param value
      * @return
      */
-    public Boolean luaExpress(String key, String value) {
-        lockScript = new DefaultRedisScript<>();
+    public Boolean luaExpress(String key,String value) {
+        lockScript = new DefaultRedisScript<Boolean>();
         lockScript.setScriptSource(
                 new ResourceScriptSource(new ClassPathResource("add.lua")));
         lockScript.setResultType(Boolean.class);
         // 封装参数
-        List<Object> keyList = new ArrayList<>();
+        List<Object> keyList = new ArrayList<Object>();
         keyList.add(key);
         keyList.add(value);
         Boolean result = (Boolean) redisTemplate.execute(lockScript, keyList);

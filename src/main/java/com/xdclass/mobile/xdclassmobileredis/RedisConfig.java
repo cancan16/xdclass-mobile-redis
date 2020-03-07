@@ -13,10 +13,10 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.*;
 
+import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,15 +33,9 @@ public class RedisConfig {
 //    }
 
 
-    /**
-     * @Description: 解决redis保存数据时，key和value的乱码问题
-     * @Param: [factory]
-     * @return: org.springframework.data.redis.core.RedisTemplate<java.lang.String, java.lang.String>
-     * @Date: 2019/12/2
-     */
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<String, String>();
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory){
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<String,String>();
         redisTemplate.setConnectionFactory(factory);
         // 使用Jackson2JsonRedisSerialize 替换默认序列化
         /**Jackson序列化  json占用的内存最小 */

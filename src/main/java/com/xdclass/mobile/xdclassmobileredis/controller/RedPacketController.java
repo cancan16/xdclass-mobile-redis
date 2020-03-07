@@ -99,8 +99,8 @@ public class RedPacketController {
         }
         //课堂作业：lua脚本将这两个命令一起请求
         redisService.decr(redPacketName, 1);
-        redisService.decr(totalAmountName,randomAmount);  //redis decreby功能
-        updateRacketInDB(uid, redPacketId,randomAmount);
+        redisService.decr(totalAmountName, randomAmount);  //redis decreby功能
+        updateRacketInDB(uid, redPacketId, randomAmount);
         return randomAmount + "";
     }
 

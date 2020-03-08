@@ -25,8 +25,9 @@ spring:
     druidPassword: wjf # 登录druid的密码
     cachePrepStmts: true  # 开启二级缓存
   redis:
-    host: 192.168.25.11
-    port: 6379
+    sentinel:
+      master: mymaster
+      nodes: 192.168.25.11:26379
 mybatis:
   typeAliasesPackage: com.xdclass.mobile.xdclassmobileredis.mapper      # 需要学员自己修改填写
   mapperLocations: classpath:/com/xdclass/mobile/xdclassmobileredis/mapper/*.xml

@@ -24,7 +24,7 @@ import java.sql.SQLException;
 
 @Configuration
 @MapperScan("com.xdclass.mobile.xdclassmobileredis.mapper")
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds= 50)
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 50)
 public class DataSourceConfig {
     private Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
 
@@ -91,9 +91,9 @@ public class DataSourceConfig {
     @Value("${spring.datasource.druidPassword}")
     private String druidPassword;
 
-    @Bean(name="dataSource",destroyMethod = "close", initMethod="init")
+    @Bean(name = "dataSource", destroyMethod = "close", initMethod = "init")
     @Primary //不要漏了这
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DruidDataSource datasource = new DruidDataSource();
         try {
             datasource.setUrl(this.dbUrl);
@@ -133,7 +133,7 @@ public class DataSourceConfig {
         return reg;
     }
 
-    @Bean(name="druidWebStatFilter")
+    @Bean(name = "druidWebStatFilter")
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(new WebStatFilter());

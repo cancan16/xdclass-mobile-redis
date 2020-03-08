@@ -13,10 +13,10 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.*;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,8 +34,8 @@ public class RedisConfig {
 
 
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<String,String>();
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<String, String>();
         redisTemplate.setConnectionFactory(factory);
         // 使用Jackson2JsonRedisSerialize 替换默认序列化
         /**Jackson序列化  json占用的内存最小 */
@@ -60,7 +60,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public KeyGenerator simpleKeyGenerator() {
+    public KeyGenerator genValueKeyGenerator() {
         return (o, method, objects) -> {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(o.getClass().getSimpleName());

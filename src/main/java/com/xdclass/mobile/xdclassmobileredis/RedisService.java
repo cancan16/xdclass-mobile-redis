@@ -371,6 +371,14 @@ public class RedisService {
     }
 
 
+    /**
+     * @Description: redis布隆过滤器提供了支持单机和集群api，并没有提供支持哨兵服务
+     * 这里需要支持哨兵模式的读写，方案： 使用lua脚本使用布隆过滤器
+     * 封装redis布隆过滤器支持sentinel-添加数据
+     * @Param: [value]
+     * @return: java.lang.Boolean
+     * @Date: 2020/3/8
+     */
     public Boolean bloomFilterAdd(int value) {
         DefaultRedisScript<Boolean> bloomAdd = new DefaultRedisScript<>();
         bloomAdd.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterAdd.lua")));
@@ -383,6 +391,12 @@ public class RedisService {
     }
 
 
+    /**
+     * @Description: 封装redis布隆过滤器支持sentinel-查询布隆过滤器中是否存在
+     * @Param: [value]
+     * @return: java.lang.Boolean
+     * @Date: 2020/3/8
+     */
     public Boolean bloomFilterExists(int value) {
         DefaultRedisScript<Boolean> bloomExists = new DefaultRedisScript<>();
         bloomExists.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterExist.lua")));

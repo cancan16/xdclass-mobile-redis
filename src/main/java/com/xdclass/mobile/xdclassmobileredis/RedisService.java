@@ -409,4 +409,56 @@ public class RedisService {
     }
 
 
+    public Boolean bloomFilterAdd(String filterName, int value) {
+        DefaultRedisScript<Boolean> bloomAdd = new DefaultRedisScript<>();
+        bloomAdd.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterAdd.lua")));
+        bloomAdd.setResultType(Boolean.class);
+        List<Object> keyList = new ArrayList<>();
+        keyList.add(filterName);
+        keyList.add(value + "");
+        Boolean result = (Boolean) redisTemplate.execute(bloomAdd, keyList);
+        return result;
+    }
+
+
+    public Boolean bloomFilterExists(String filterName, int value) {
+        DefaultRedisScript<Boolean> bloomExists = new DefaultRedisScript<>();
+        bloomExists.setScriptSource(new ResourceScriptSource(new ClassPathResource("bloomFilterExist.lua")));
+        bloomExists.setResultType(Boolean.class);
+        List<Object> keyList = new ArrayList<>();
+        keyList.add(filterName);
+        keyList.add(value + "");
+        Boolean result = (Boolean) redisTemplate.execute(bloomExists, keyList);
+        return result;
+    }
+
+    /**
+     * 写入缓存
+     *
+     * @param key
+     * @return
+     */
+    public boolean incr(final String key) {
+        boolean result = false;
+        try {
+            ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
+            operations.increment(key, 1);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public Boolean getAndIncrLua(String key) {
+        DefaultRedisScript<Boolean> bloomExists = new DefaultRedisScript<>();
+        bloomExists.setScriptSource(new ResourceScriptSource(new ClassPathResource("secKillIncr.lua")));
+        bloomExists.setResultType(Boolean.class);
+        List<Object> keyList = new ArrayList<>();
+        keyList.add(key);
+        Boolean result = (Boolean) redisTemplate.execute(bloomExists, keyList);
+        return result;
+    }
+
+
 }

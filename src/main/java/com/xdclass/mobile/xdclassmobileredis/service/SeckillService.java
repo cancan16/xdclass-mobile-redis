@@ -57,7 +57,7 @@ public class SeckillService {
         if (countNumInt * 1.2 < accessNumInt) {
             return "抢购已经完成,欢迎下次参与";
         } else {
-            redisService.incr(skuIdCountName);
+            redisService.incr(skuIdAccessName);
         }
         /**
          * 信息校验层

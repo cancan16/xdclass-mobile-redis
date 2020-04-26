@@ -16,7 +16,6 @@ public class CglibTest {
 
     public Object createProxy(Class targetClass) {
         ConcurrentLinkedQueue<Object> objects = new ConcurrentLinkedQueue<>();
-        objects.add();
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(targetClass);
         enhancer.setCallback(new MyMethodInterceptor());
